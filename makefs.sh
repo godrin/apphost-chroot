@@ -20,11 +20,15 @@ mkdir build
 cd build
 test -e ruby-1.9.3-p327.tar.bz2 || wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p327.tar.bz2
 
-#rm -rf ruby-1.9.3-p327
-#tar xfj ruby-1.9.3-p327.tar.bz2
-#cd ruby-1.9.3-p327
-#./configure --prefix=/usr/ruby1.9.3 --disable-install-doc
-#make
+if [ ! -e ruby-1.9.3-p327 ] ; then
+  #rm -rf ruby-1.9.3-p327
+  tar xfj ruby-1.9.3-p327.tar.bz2
+  cd ruby-1.9.3-p327
+  ./configure --prefix=/usr/ruby1.9.3 --disable-install-doc
+else
+  cd ruby-1.9.3-p327
+fi
+make
 make DESTDIR=${prefix} install
 cd ${pwd}
 mkdir -p ${prefix}/bin ${prefix}/lib ${prefix}/usr/bin
@@ -44,6 +48,8 @@ for prg in ${prgs} ; {
   cp -av ${prg} ${prefix}/${prg}
 }
 
+
+test -e  ${prefix}/usr/ruby1.9.3/bin/ruby || { echo "Ruby not compiled correctly!" ; exit 1 ; }
 
 ldd ${prgs} ${prefix}/usr/ruby1.9.3/bin/ruby |sed -e "s/.*=>//" -e "s/(.*//">deps
 for a in $(cat deps) ;  {
