@@ -31,7 +31,7 @@ fi
 make
 make DESTDIR=${prefix} install
 cd ${pwd}
-mkdir -p ${prefix}/bin ${prefix}/lib ${prefix}/usr/bin
+mkdir -p ${prefix}/bin ${prefix}/lib ${prefix}/usr/bin ${prefix}/proc
 
 prgs='/bin/ps /bin/bash /bin/ls /bin/grep /bin/less /bin/cat /usr/bin/whoami /usr/bin/strace'
 
